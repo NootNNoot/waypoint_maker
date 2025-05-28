@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy, QoSHistoryPolicy
 
 
 class PoseSaver(Node):
@@ -8,10 +9,18 @@ class PoseSaver(Node):
     def __init__(self):
         super().__init__('pose_saver')
 
+        subscriber_qos = QoSProfile(
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=10
+        )
+
         self.sub = self.create_subscription(
             PoseWithCovarianceStamped, 
             'robot1/map_pose',
-            self.sub_callback
+            self.sub_callback,
+            qos_profile=subscriber_qos
         )
 
         self.file = open("Robot_Poses", 'w')
