@@ -13,13 +13,15 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='kaper',
-    maintainer_email='kaper@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    maintainer='Kacper',
+    maintainer_email='kacpergasior19@gmail.com',
+    description='Saving and publishing positions of MP-400 neobotix robot to use waypoints',
+    license='Apache License 2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'save_pose = waypoint_maker.saveCurrPos:main',
+            'go_to_goal = waypoint_maker.publishPoint:main'
         ],
     },
 )
