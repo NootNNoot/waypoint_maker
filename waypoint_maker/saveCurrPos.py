@@ -11,11 +11,9 @@ class PoseSaver(Node):
 
         subscriber_qos = QoSProfile(
             reliability=QoSReliabilityPolicy.RELIABLE,
-            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
             history=QoSHistoryPolicy.KEEP_LAST,
             depth=10
         )
-
         self.sub = self.create_subscription(
             PoseWithCovarianceStamped, 
             'robot1/map_pose',
@@ -26,12 +24,11 @@ class PoseSaver(Node):
         self.file = open("Robot_Poses", 'w')
 
     def sub_callback(self, msg: PoseWithCovarianceStamped):
-        _ = input("Press Enter to Save Robot Pose: ")
         pose = msg.pose.pose
         pose_array = [pose.position.x, pose.position.y, pose.position.z, 
                       pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
         file = self.file
-        file.write(f'{pose_array}')
+        file.write(f'{pose_array} \n')
 
 
 

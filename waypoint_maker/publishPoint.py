@@ -54,8 +54,8 @@ class PointPublish(Node):
         iter = 0
         for line in self.file:
             arr = []
-            for num in line[1:-2].split(','):
-                arr.append(int(num))
+            for num in line.strip()[1:-2].split(','):
+                arr.append(float(num))
             
             dict[f'goal {iter}'] = arr
             iter += 1
