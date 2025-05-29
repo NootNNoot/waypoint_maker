@@ -9,6 +9,8 @@ class PoseSaver(Node):
     def __init__(self):
         super().__init__('pose_saver')
 
+        self.mode = input("Make New Waypoints ('w'), Or Add on to Existing Ones ('a')?: ")
+
         subscriber_qos = QoSProfile(
             reliability=QoSReliabilityPolicy.RELIABLE,
             history=QoSHistoryPolicy.KEEP_LAST,
@@ -21,7 +23,7 @@ class PoseSaver(Node):
             qos_profile=subscriber_qos
         )
 
-        self.file = open("Robot_Poses", 'w')
+        self.file = open("Robot_Poses", "%s" % self.mode)
         self.latest = None
 
     def sub_callback(self, msg: PoseWithCovarianceStamped):
