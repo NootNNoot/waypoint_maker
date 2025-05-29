@@ -2,8 +2,7 @@ import rclpy
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 from rclpy.node import Node
 from rclpy.duration import Duration
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy, QoSHistoryPolicy
-
+import time
 
 
 
@@ -13,18 +12,11 @@ class PointPublish(Node):
         super().__init__('point_publisher')
         self.goal = ...
 
-        publisher_qos = QoSProfile(
-            reliability=QoSReliabilityPolicy.RELIABLE,
-            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
-            history=QoSHistoryPolicy.KEEP_LAST,
-            depth=10
-        )
-
         self.pub = self.create_publisher(PoseStamped, 'robot1/goal_pose', 10)
         self.file = open("Robot_Poses", 'r')
         self.points = self.create_point_dict()
         self.file.close()
-        self.timer = self.create_timer(0.1, self.enter_check)
+        self.timer = self.create_timer(0.5, self.enter_check)
 
     def enter_check(self):
         try:
@@ -45,14 +37,15 @@ class PointPublish(Node):
         print(pose)
         goal_pose = PoseStamped()
         goal_pose.header.frame_id = 'map'
-        goal_pose.header.stamp = Node.get_clock().now()
-        goal_pose.pose.position.x = pose[0]
-        goal_pose.pose.position.z = pose[2]
-        goal_pose.pose.position.y = pose[1]
-        goal_pose.pose.orientation.x = pose[3]
-        goal_pose.pose.orientation.y = pose[4]
-        goal_pose.pose.orientation.z = pose[5]
-        goal_pose.pose.orientation.w = pose[6]
+        goal_pose.header.stamp = self.get_clock().now().to_msg()
+        goal_pose.pose.position.x = float(pose[0])
+        goal_pose.pose.position.z = float(pose[2])
+        goal_pose.pose.position.y = float(pose[1])
+        goal_pose.pose.orientation.x = float(pose[3])
+        goal_pose.pose.orientation.y = float(pose[4])
+        goal_pose.pose.orientation.z = float(pose[5])
+        goal_pose.pose.orientation.w = float(pose[6])
+        print(goal_pose)
         self.pub.publish(goal_pose)
     
 
