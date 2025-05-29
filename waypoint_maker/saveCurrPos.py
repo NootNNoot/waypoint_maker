@@ -31,15 +31,14 @@ class PoseSaver(Node):
         
     def run(self):
         try: 
-            while rclpy.ok():
-                input("Press Enter to Save Robot Pose, Ctrl+C to Exit: ")
-                if self.latest:
-                    pose = self.latest
-                    pose_array = [pose.position.x, pose.position.y, pose.position.z, 
-                                pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
-                    file = self.file
-                    file.write(f'{pose_array} \n')
-                rclpy.spin_once(self, timeout_sec=0.1)
+            input("Press Enter to Save Robot Pose, Ctrl+C to Exit: ")
+            if self.latest:
+                pose = self.latest
+                pose_array = [pose.position.x, pose.position.y, pose.position.z, 
+                            pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
+                file = self.file
+                file.write(f'{pose_array} \n')
+            rclpy.spin_once(self, timeout_sec=0.1)
         except KeyboardInterrupt:
             pass
 
